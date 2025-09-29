@@ -4,7 +4,7 @@ import Pricing from '@/assets/pricing.png'
 export default function Header() {
     return (
         <>
-            <header className="h-50 w-full flex justify-between items-center select-none max-lg:px-6 max-lg:h-40 max-md:h-30 max-sm:h-20" draggable={false}>
+            <header className="h-50 w-full flex justify-between items-center select-none max-2xl:h-30 max-lg:px-6 max-md:h-30 max-sm:h-20" draggable={false}>
                 <div className="header-left flex justify-center items-center gap-2">
                     <div className="logo-container">
                         <img src="favicon/favicon-96x96.png" alt="MIRA Logo" className="rounded-2xl size-16  select-none max-sm:size-12" draggable={false} />
