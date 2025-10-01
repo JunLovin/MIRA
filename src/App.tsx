@@ -1,11 +1,13 @@
-import EarlyAccess from "./features/early/EarlyAccess"
+import EarlyAccess from "./features/early/EarlyAccess";
+import { Analytics } from "@vercel/analytics/react";
 
 function App() {
   return (
     <>
-    <EarlyAccess />
+      <Analytics />
+      <EarlyAccess />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
