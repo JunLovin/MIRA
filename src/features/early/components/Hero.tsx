@@ -7,15 +7,19 @@ export default function Hero() {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const arrowRef = useRef<SVGSVGElement>(null);
 
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [email, setEmail] = useState("");
+  // const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
   const handleButtonClick = () => {
-    if (isAnimating) return;
+    if (!email.trim()) return;
+    if (isSubmitting) return;
 
-    setIsAnimating(true);
+    setIsSubmitting(true);
 
     const tl = gsap.timeline({
-      onComplete: () => setIsAnimating(false),
+      onComplete: () => setIsSubmitting(false),
     });
 
     tl.fromTo(
@@ -31,6 +35,77 @@ export default function Hero() {
         ease: "power2.in",
       },
     )
+      .fromTo(
+        arrowRef.current,
+        {
+          x: -30,
+          opacity: 0,
+        },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.3,
+          ease: "power2.out",
+        },
+      );
+
+    console.log("Button clicked!");
+  };
+
+  useEffect(() => {
+    const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+
+    tl.fromTo(
+      titleRef.current,
+      { opacity: 0, y: 15 },
+      { opacity: 1, y: 0, duration: 1.2 },
+      0,
+    );
+
+    tl.fromTo(
+      subscriptionRef.current,
+      { opacity: 0, y: 10 },
+      { opacity: 1, y: 0, duration: 0.8 },
+      0.5,
+    );
+
+    gsap.fromTo(
+      ".radiate-target",
+      {
+        textShadow: "0 0 5px #FFF04B, 0 0 15px #FFF04B",
+      },
+      {
+        textShadow: "0 0 10px #FFF04B, 0 0 35px #FFF04B, 0 0 50px #FFF04B",
+        duration: 2,
+        repeat: -1,
+        yoyo: true,
+        ease: "power2.inOut",
+      },
+    );
+  }, []);
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    try {
+      // TODO: Integrate logic with an API (backend-Mailchimp/ConvertKit)
+      setEmail("");
+      return await new Promise<void>((resolve) =>
+        setTimeout(() => {
+          setSuccess(true);
+          setTimeout(() => setSuccess(false), 5000);
+          resolve();
+        }, 500),
+      );
+    } catch (error) {
+      console.error(error);
+      throw Error;
+    }
+  };
+
+  return (
+    <>
+      <div className="hero h-full flex flex-col mt-12 items-center gap-16 w-3xl mx-auto max-lg:w-full">
+=======
 
       .fromTo(
         arrowRef.current,
@@ -96,7 +171,7 @@ export default function Hero() {
         </div>
         <div
           ref={subscriptionRef}
-          className="hero-cta-input flex flex-col items-center justify-center gap-6 max-md:w-full"
+          className="hero-cta-input flex flex-col items-center justify-center gap-9 max-md:w-full"
         >
           <div className="cta-text">
             <p className="text-2xl font-bold text-[#D0D0D0] max-md:text-xl">
@@ -106,28 +181,51 @@ export default function Hero() {
             </p>
           </div>
           <div className="cta-input max-md:w-full max-md:px-6">
-            <div className="input bg-[#1E1E1E] w-2xl max-md:w-full h-26 rounded-full flex justify-center items-center px-2">
-              <input
-                type="email"
-                className="w-[80%] h-full rounded-full px-4 outline-none text-xl placeholder:select-none"
-                placeholder="example@domain.com"
-              />
-              <button
-                ref={buttonRef}
-                onClick={handleButtonClick}
-                disabled={isAnimating}
-                className="size-20 bg-[#FFF04B] rounded-full text-black flex justify-center items-center cursor-pointer active:bg-[#e7d944] transition disabled:cursor-not-allowed overflow-hidden"
+            <div className="input bg-[#1E1E1E] w-2xl max-md:w-full h-26 rounded-full flex justify-center items-center px-2 relative">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSubmit();
+                  handleButtonClick();
+                }}
+                className="w-full flex rounded-full justify-center items-center px-2 h-full"
               >
-                <svg
-                  ref={arrowRef}
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="54"
-                  height="54"
-                  viewBox="0 0 24 24"
+                <label
+                  htmlFor="early-input"
+                  className={`absolute transition ${success ? "opacity-100" : "opacity-0"} text-sm -top-5 left-6 font-semibold text-[#D0D0D0]`}
                 >
-                  <path d="M13.884 6.116a1.25 1.25 0 0 0-1.768 1.768l2.866 2.866H6a1.25 1.25 0 1 0 0 2.5h8.982l-2.866 2.866a1.25 1.25 0 0 0 1.768 1.768l5-5a1.25 1.25 0 0 0 0-1.768z" />
-                </svg>
-              </button>
+                  Confirmed! We'll email you when we're ready to{" "}
+                  <span className="font-bold text-[#FFF04B] radiate-target">
+                    Radiate
+                  </span>
+                </label>
+                <input
+                  name="early-input"
+                  id="early-input"
+                  type="email"
+                  className="w-[80%] h-full rounded-full px-4 outline-none text-xl placeholder:select-none"
+                  placeholder="example@domain.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+                <button
+                  type="submit"
+                  ref={buttonRef}
+                  disabled={isSubmitting}
+                  className="size-20 bg-[#FFF04B] rounded-full text-black flex justify-center items-center cursor-pointer active:bg-[#e7d944] transition disabled:cursor-not-allowed overflow-hidden"
+                >
+                  <svg
+                    ref={arrowRef}
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="54"
+                    height="54"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M13.884 6.116a1.25 1.25 0 0 0-1.768 1.768l2.866 2.866H6a1.25 1.25 0 1 0 0 2.5h8.982l-2.866 2.866a1.25 1.25 0 0 0 1.768 1.768l5-5a1.25 1.25 0 0 0 0-1.768z" />
+                  </svg>
+                </button>
+              </form>
             </div>
             <p className="text-[#383838] font-bold ml-6">
               We promise to only send you MIRA launch updates
@@ -138,4 +236,3 @@ export default function Hero() {
     </>
   );
 }
-
