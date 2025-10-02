@@ -34,20 +34,19 @@ export default function Hero() {
         duration: 0.3,
         ease: "power2.in",
       },
-    )
-      .fromTo(
-        arrowRef.current,
-        {
-          x: -30,
-          opacity: 0,
-        },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 0.3,
-          ease: "power2.out",
-        },
-      );
+    ).fromTo(
+      arrowRef.current,
+      {
+        x: -30,
+        opacity: 0,
+      },
+      {
+        x: 0,
+        opacity: 1,
+        duration: 0.3,
+        ease: "power2.out",
+      },
+    );
 
     console.log("Button clicked!");
   };
@@ -101,60 +100,6 @@ export default function Hero() {
       throw Error;
     }
   };
-
-  return (
-    <>
-      <div className="hero h-full flex flex-col mt-12 items-center gap-16 w-3xl mx-auto max-lg:w-full">
-=======
-
-      .fromTo(
-        arrowRef.current,
-        {
-          x: -30,
-          opacity: 0,
-        },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 0.3,
-          ease: "power2.out",
-        },
-      );
-
-    console.log("Button clicked!");
-  };
-
-  useEffect(() => {
-    const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
-
-    tl.fromTo(
-      titleRef.current,
-      { opacity: 0, y: 15 },
-      { opacity: 1, y: 0, duration: 1.2 },
-      0,
-    );
-
-    tl.fromTo(
-      subscriptionRef.current,
-      { opacity: 0, y: 10 },
-      { opacity: 1, y: 0, duration: 0.8 },
-      0.5,
-    );
-
-    gsap.fromTo(
-      ".radiate-target",
-      {
-        textShadow: "0 0 5px #FFF04B, 0 0 15px #FFF04B",
-      },
-      {
-        textShadow: "0 0 10px #FFF04B, 0 0 35px #FFF04B, 0 0 50px #FFF04B",
-        duration: 2,
-        repeat: -1,
-        yoyo: true,
-        ease: "power2.inOut",
-      },
-    );
-  }, []);
 
   return (
     <>
@@ -236,3 +181,4 @@ export default function Hero() {
     </>
   );
 }
+
