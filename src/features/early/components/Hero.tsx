@@ -103,7 +103,7 @@ export default function Hero() {
 
   return (
     <>
-      <div className="hero h-[80%] max-2xl:h-full flex flex-col justify-center items-center gap-16 w-3xl mx-auto max-lg:w-full">
+      <div className="hero h-[60dvh] max-2xl:h-[80dvh] flex flex-col justify-center items-center gap-16 w-3xl mx-auto max-lg:w-full">
         <div className="hero-title max-sm:px-4">
           <h1
             ref={titleRef}
@@ -181,4 +181,3 @@ export default function Hero() {
     </>
   );
 }
-
