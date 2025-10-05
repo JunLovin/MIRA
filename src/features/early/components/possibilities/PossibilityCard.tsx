@@ -23,8 +23,10 @@ export default function PossibilityCard({
       <div className="absolute -z-2 inset-0 bg-[#FFF04B]/50 blur-md animate-pulse" />
       <div className="icon bg-[#FFF04B] p-4 rounded-lg text-black">{icon}</div>
       <div className="card-content flex flex-col gap-2">
-        <h3 className="font-semibold text-2xl">{cardTitle}</h3>
-        <p className="font-medium text-[#666666] text-lg">{cardDescription}</p>
+        <h3 className="font-semibold text-2xl max-sm:text-xl">{cardTitle}</h3>
+        <p className="font-medium text-[#666666] text-lg max-sm:text-base">
+          {cardDescription}
+        </p>
       </div>
     </div>
   );

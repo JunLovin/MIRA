@@ -32,8 +32,10 @@ export default function Possibilities() {
   return (
     <>
       <section className="possibilities-section min-h-dvh flex flex-col items-center gap-16 justify-center">
-        <h2 className="font-bold text-5xl">A University of Possibilities</h2>
-        <div className="possibilities-grid grid grid-cols-2 grid-rows-2 h-full gap-12">
+        <h2 className="font-bold text-5xl text-center max-md:text-4xl max-sm:text-4xl">
+          A University of Possibilities
+        </h2>
+        <div className="possibilities-grid grid grid-cols-2 grid-rows-2 h-full max-lg:grid-cols-1 max-lg:grid-rows-4 px-4 gap-12">
           {data.map((data, i) => (
             <PossibilityCard
               key={i}
