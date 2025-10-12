@@ -13,6 +13,7 @@ export default function EarlyAccess() {
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           backgroundSize: "cover",
+          backgroundAttachment: "fixed",
         }}
         className="scroll-smooth flex flex-col font-inter overflow-hidden min-h-dvh w-full relative z-10 items-center text-white"
       >
