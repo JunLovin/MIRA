@@ -1,5 +1,5 @@
-import ToastBackground from "@/assets/toast_background.png";
-import type { ToastProps } from "@/utilities/types/toast.type";
+import ToastBackground from "@/assets/toast-background.png";
+import type { ToastProps } from "@/shared/types/toast.type";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 

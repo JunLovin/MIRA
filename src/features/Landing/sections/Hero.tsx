@@ -1,26 +1,27 @@
 import gsap from "gsap";
 import { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import z from "zod";
+import type { earlySchema } from "../schemas/hero.schema";
+
+type EarlyForm = z.infer<typeof earlySchema>;
 
 export default function Hero() {
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting, errors },
+  } = useForm<EarlyForm>();
+
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subscriptionRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const arrowRef = useRef<SVGSVGElement>(null);
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [email, setEmail] = useState("");
-  // const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
   const handleButtonClick = () => {
-    if (!email.trim()) return;
-    if (isSubmitting) return;
-
-    setIsSubmitting(true);
-
-    const tl = gsap.timeline({
-      onComplete: () => setIsSubmitting(false),
-    });
+    const tl = gsap.timeline();
 
     tl.fromTo(
       arrowRef.current,
@@ -47,8 +48,24 @@ export default function Hero() {
         ease: "power2.out",
       },
     );
+  };
 
-    console.log("Button clicked!");
+  const onSubmit = async () => {
+    if (isSubmitting) return;
+    try {
+      // TODO: Integrate logic with an API (backend-Mailchimp/ConvertKit)
+      handleButtonClick();
+      return await new Promise<void>((resolve) =>
+        setTimeout(() => {
+          setSuccess(true);
+          setTimeout(() => setSuccess(false), 5000);
+          resolve();
+        }, 500),
+      );
+    } catch (error) {
+      console.error(error);
+      throw Error;
+    }
   };
 
   useEffect(() => {
@@ -83,27 +100,9 @@ export default function Hero() {
     );
   }, []);
 
-  const handleSubmit = async () => {
-    setIsSubmitting(true);
-    try {
-      // TODO: Integrate logic with an API (backend-Mailchimp/ConvertKit)
-      setEmail("");
-      return await new Promise<void>((resolve) =>
-        setTimeout(() => {
-          setSuccess(true);
-          setTimeout(() => setSuccess(false), 5000);
-          resolve();
-        }, 500),
-      );
-    } catch (error) {
-      console.error(error);
-      throw Error;
-    }
-  };
-
   return (
     <>
-      <div className="hero h-[60dvh] max-2xl:h-[80dvh] flex flex-col justify-center items-center gap-16 w-3xl mx-auto max-lg:w-full">
+      <div id="hero" className="hero h-[60dvh] max-2xl:h-[80dvh] flex flex-col justify-center items-center gap-16 w-3xl mx-auto max-lg:w-full">
         <div className="hero-title max-sm:px-4">
           <h1
             ref={titleRef}
@@ -128,13 +127,15 @@ export default function Hero() {
           <div className="cta-input max-md:w-full max-md:px-6">
             <div className="input bg-[#1E1E1E] w-2xl max-md:w-full h-26 rounded-full flex justify-center items-center px-2 relative">
               <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSubmit();
-                  handleButtonClick();
-                }}
+                onSubmit={handleSubmit(onSubmit)}
                 className="w-full flex rounded-full justify-center items-center px-2 h-full"
               >
+                <label
+                  htmlFor="early-input"
+                  className={`${errors.email ? "opacity-0" : "opacity-0"} transition absolute text-sm -top-5 left-6 font-semibold text-[#D0D0D0]`}
+                >
+                  {errors.email?.message || ""}
+                </label>
                 <label
                   htmlFor="early-input"
                   className={`absolute transition ${success ? "opacity-100" : "opacity-0"} text-sm -top-5 left-6 font-semibold text-[#D0D0D0]`}
@@ -145,14 +146,13 @@ export default function Hero() {
                   </span>
                 </label>
                 <input
-                  name="early-input"
+                  {...register("email", {
+                    required: "Please enter a valid email",
+                  })}
                   id="early-input"
                   type="email"
                   className="w-[80%] h-full rounded-full px-4 outline-none text-xl placeholder:select-none"
                   placeholder="example@domain.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
                 />
                 <button
                   type="submit"
