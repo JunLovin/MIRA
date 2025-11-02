@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Pricing from "@/assets/pricing.png";
 import { useState } from "react";
-import Toast from "@/common/components/ui/Toast";
+import Toast from "./ui/Toast";
 
 export default function Header() {
   const [isToastVisible, setIsToastVisible] = useState(false);
@@ -20,7 +20,7 @@ export default function Header() {
       >
         Coming Soon!
       </Toast>
-      <header
+      <div
         className="h-50 w-full flex justify-between items-center select-none max-2xl:h-30 max-lg:px-6 max-md:h-30 max-sm:h-20"
         draggable={false}
       >
@@ -57,8 +57,7 @@ export default function Header() {
             </button>
           </Link>
         </div>
-      </header>
+      </div>
     </>
   );
 }
-

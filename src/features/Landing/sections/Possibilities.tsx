@@ -1,5 +1,5 @@
 import { Grid, ListChecks, Music, Palette } from "lucide-react";
-import PossibilityCard from "./possibilities/PossibilityCard";
+import PossibilityCard from "../components/possibilities/PossibilityCard";
 
 export default function Possibilities() {
   const data = [
@@ -31,7 +31,7 @@ export default function Possibilities() {
 
   return (
     <>
-      <section className="possibilities-section min-h-dvh flex flex-col items-center gap-16 justify-center">
+      <section className="possibilities-section min-h-dvh flex flex-col items-center gap-16 justify-center w-5xl max-5xl max-lg:w-full mx-auto">
         <h2 className="font-bold text-5xl text-center max-md:text-4xl max-sm:text-4xl">
           A University of Possibilities
         </h2>
